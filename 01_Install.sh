@@ -29,6 +29,11 @@ read -p "Enter the name of the ROOT partition (eg. sda2): " ROOTDRIVE
 read -p "Enter the name of the drive Win 11 is on: " WINDOWS
 read -p "Enter the name of the drive for joint Win11/Linux storage: " STORAGE
 
+#BOOTDRIVE=""
+#ROOTDRIVE=""
+#WINDOWS=""
+#STORAGE=""
+
 #-------------------------------------------------------
 # Update mirrors
 #-------------------------------------------------------
@@ -81,11 +86,18 @@ mount /dev/$BOOTDRIVE /mnt/boot/efi
 # mkdir /mnt/vm
 # mount /dev/$sda3 /mnt/vm
 
+#Windows
+mkdir /dev/windows
+mount /dev/$WINDOWS /mnt/windows
+
+#Storage
+mkdir /dev/storage
+mount /dev/$STORAGE /mnt/storage
 
 # ------------------------------------------------------
 # Install base packages
 # ------------------------------------------------------
-pacstrap -K /mnt base base-devel git linux linux-firmware openssh reflector rsync intel-ucode neovim btrfs-progs
+pacstrap -K /mnt base base-devel git linux linux-firmware intel-ucode neovim
 
 
 # ------------------------------------------------------
