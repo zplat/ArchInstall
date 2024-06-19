@@ -11,15 +11,12 @@
 # Key variables
 # ------------------------------------------------------
 
-clear
-
 HOST_NAME=''
 ROOT_PASSWD=''
 USER=''
 USER_PASSWD=''
 
-clear
-
+ARCH_RESPOSITORY=''
 
 # ------------------------------------------------------
 # Set System Time
@@ -45,14 +42,14 @@ pacman -Syy
 # Install Packages
 # ------------------------------------------------------
 
-pacman --needed --noconfirm -S  grub efibootmgr reflector xdg-desktop-portal-wlr grub-btrfs
-pacman --needed --noconfirm -S  networkmanager network-manager-applet wpa_supplicant efibootmgr dialog
-pacman --needed --noconfirm -S  base-devel linux-headers pacman-contrib os-prober 
-pacman --needed --noconfirm -S  xdg-user-dirs xdg-utils terminus-font
-pacman --needed --noconfirm -S  zsh zsh-completions bat alsa-utils nfs-utils inetutils dnsutils brightnessctl
-pacman --needed --noconfirm -S  udiskie ntfs-3g openssh bluez bluez-utils git moreutils htop zip unzip inxi hplip
-pacman --needed --noconfirm -S  bluez bluez-utils cups firewalld mtools dosfstools avahi dnsmasq nss-mdns ipset
-pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack
+pacman --needed --noconfirm -S  grub efibootmgr grub-btrfs reflector pacman-contrib xdg-user-dirs xdg-utils terminus-font
+pacman --needed --noconfirm -S  networkmanager network-manager-applet wpa_supplicant dialog
+pacman --needed --noconfirm -S  base-devel linux-headers
+pacman --needed --noconfirm -S  zsh zsh-completions bat git cups openssh udiskie 
+#pacman --needed --noconfirm -S  nfs-utils inetutils dnsutils brightnessctl
+pacman --needed --noconfirm -S  ntfs-3g moreutils htop zip unzip inxi hplip avahi nss-mdns dnsmasq
+pacman --needed --noconfirm -S  bluez bluez-utils firewalld mtools dosfstools ipset
+pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
 
 # ------------------------------------------------------
 # set language locale.
@@ -67,7 +64,7 @@ echo "ko_KR.UTF-8 UTF-8" >> /etc/locale.gen #Well over the top!
 
 locale-gen
 
-echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+echo "LANG=en_GB.UTF-8" >> /etc/locale.conf
 
 # ------------------------------------------------------
 # Set Keyboard
@@ -81,59 +78,11 @@ echo "FONT_MAP=8859-1" >> /etc/vconsole.conf
 # Set hostname and localhost
 # ------------------------------------------------------
 
-echo "$HOST_NAME" >> /etc/hostname
-echo "127.0.0.1 localhost" >> /etc/hosts
-echo "::1       localhost" >> /etc/hosts
-echo "127.0.1.1 $HOST_NAME.localdomain $HOST_NAME" >> /etc/hosts
-clear
-
-# ------------------------------------------------------
-# Set Root Password
-# ------------------------------------------------------
-
-echo "Set root password"
-echo "root:${ROOT_PASSWD}" | chpasswd
-
-# ------------------------------------------------------
-# Add User
-# ------------------------------------------------------
-
-echo "Add user $USER"
-useradd -m -g users -s /bin/zsh "$USER"
-echo "${USER}:${USER_PASSWD}" | chpasswd
-
-
-# ------------------------------------------------------
-# Grub installation
-# ------------------------------------------------------
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --removable
-grub-mkconfig -o /boot/grub/grub.cfg
-
-# ------------------------------------------------------
-# Add btrfs, setfont and nvidia to mkinitcpio
-# ------------------------------------------------------
-
-sed -i 's/MODULE.*/MODULE=\(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm setfont\)/' /etc/mkinitcpio.conf
-mkinitcpio -p linux
-
-# ------------------------------------------------------
-# Make user an administrator
-# Add user permissions to file in sudoers.d folder under user name
-# ------------------------------------------------------
-
-clear
-clear
-echo "$USER ALL=(ALL) ALL" >>"/etc/sudoers.d/$USER"
-
-# ------------------------------------------------------
-# Set hostname and localhost
-# ------------------------------------------------------
-
+echo "Set hostname and localhost"
 echo "$HOST_NAME" >>/etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1  ${HOST_NAME}.localdomain $HOST_NAME" >> /etc/hosts
-
 clear
 
 # ------------------------------------------------------
@@ -142,14 +91,17 @@ clear
 
 echo "Set root password"
 echo "root:${ROOT_PASSWD}" | chpasswd
+clear
 
 # ------------------------------------------------------
-# Add User
+# Add User and password
 # ------------------------------------------------------
 
 echo "Add user $USER"
 useradd -m -g users -s /bin/zsh "$USER"
+echo "set user password"
 echo "${USER}:${USER_PASSWD}" | chpasswd
+clear
 
 # ------------------------------------------------------
 # Enable Services
@@ -165,24 +117,122 @@ systemctl enable firewalld
 systemctl enable acpid
 systemctl enable paccache.timer
 
-
 # ------------------------------------------------------
 # Grub installation
 # ------------------------------------------------------
 
+echo "Install Grub"
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --removable
 grub-mkconfig -o /boot/grub/grub.cfg
+clear
 
 # ------------------------------------------------------
-# Add btrfs and setfont to mkinitcpio
-
+# Add btrfs, setfont and nvidia to mkinitcpio
 # Before: MODULE=()
 # After:  MODULE=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm setfont)
 # ------------------------------------------------------
 
-sed -i 's/MODULE.*/MODULE=\(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm\)/' /etc/mkinitcpio.conf
+echo "Update mkinitcpio.conf and update linux"
+sed -i 's/MODULE.*/MODULE=\(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm setfont\)/' /etc/mkinitcpio.conf
 mkinitcpio -p linux
+clear
 
+# ------------------------------------------------------
+# Setup systemctl hooks
+# ------------------------------------------------------
+
+#   Set reflector defaults
+
+echo "# Set the output path where the mirrorlist will be saved (--save).
+--save /etc/pacman.d/mirrorlist
+# Select the transfer protocol (--protocol).
+--protocol https
+# Select the country (--country).
+# Consult the list of available countries with "reflector --list-countries" and
+# select the countries nearest to you or the ones that you trust. For example:
+--country FR,DE,IE,NL,GB
+# Use only the  most recently synchronized mirrors (--latest).
+--latest 100
+# Sort the mirrors by synchronization time (--sort).
+--sort score
+" >/etc/xdg/reflector/reflector.conf
+
+#    Automate package cleaning with paccache
+
+echo "[Trigger]
+Operation = Remove
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = *
+[Action]
+Description = Keep the last cache and the currently installed.
+When = PostTransaction
+Exec = /usr/bin/paccache -rvk2
+" >/usr/share/libalpm/hooks/paccache.hook
+
+#   List of orphan apps to remove
+
+echo "[Trigger]
+Operation = Install
+Operation = Remove
+Type = Package
+Target = *
+[Action]
+When = PostTransaction
+Exec = /usr/bin/bash -c \"/usr/bin/pacman -Qtd > $ARCH_RESPOSITORY/orphanpkglist.txt || /usr/bin/echo '==> no orphans found'\"
+" >/usr/share/libalpm/hooks/pkgClean.hook
+
+#    List of Core programs
+
+echo "[Trigger]
+Operation = Install
+Operation = Remove
+Type = Package
+Target = *
+[Action]
+When = PostTransaction
+Exec = /bin/sh -c '/usr/bin/pacman -Qqent > $ARCH_RESPOSITORY/corepkglist.txt'
+" >/usr/share/libalpm/hooks/pkgCore.hook
+
+#    List of AUR programs
+
+echo "[Trigger]
+Operation = Install
+Operation = Remove
+Type = Package
+Target = *
+[Action]
+When = PostTransaction
+Exec = /bin/sh -c '/usr/bin/pacman -Qqem > $ARCH_RESPOSITORY/aurpkglist.txt'
+" >/usr/share/libalpm/hooks/pkgAUR.hook
+
+# ------------------------------------------------------
+# cacche
+# ------------------------------------------------------
+
+pacman -S ccache
+sed -i 'x;/^BUILDENV/s/!ccache/ccache/' /etc/makepkg.conf
+
+# ------------------------------------------------------
+# MAKEFLAGS
+# ------------------------------------------------------
+
+CORES=$(nproc)
+LOAD=$((CORES / 2))
+JOBS=$((LOAD + 1))
+sed -i "x;/^#MAKEFLAGS/s/"-j2"/-j${JOBS} -l${LOAD}/ " /etc/makepkg.conf
+sed -i "x;/^#MAKEFLAGS/s/^#//" /etc/makepkg.conf
+
+
+# ------------------------------------------------------
+# Make user an administrator
+# Add user permissions to file in sudoers.d folder under user name
+# ------------------------------------------------------
+
+echo "enable user to have super user permissions"
+echo "$USER ALL=(ALL) ALL" >>"/etc/sudoers.d/$USER"
+clear
 
 
 # ------------------------------------------------------
