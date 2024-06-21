@@ -46,10 +46,12 @@ pacman --needed --noconfirm -S  grub efibootmgr grub-btrfs reflector pacman-cont
 pacman --needed --noconfirm -S  networkmanager network-manager-applet wpa_supplicant dialog
 pacman --needed --noconfirm -S  base-devel linux-headers
 pacman --needed --noconfirm -S  zsh zsh-completions bat git cups openssh udiskie 
-#pacman --needed --noconfirm -S  nfs-utils inetutils dnsutils brightnessctl
-pacman --needed --noconfirm -S  ntfs-3g moreutils htop zip unzip inxi hplip avahi nss-mdns dnsmasq
+#pacman --needed --noconfirm -S  nfs-utils inetutils dnsutils brightnessctl avahi nss-mdns dnsmasq inxi moreutils
+pacman --needed --noconfirm -S  ntfs-3g htop zip unzip hplip
 pacman --needed --noconfirm -S  bluez bluez-utils firewalld mtools dosfstools ipset
 pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
+#pacman --needed --noconfirm -S  nvidia nvidia-utils nvidia-settings opencl-nvidia
+# ------------------------------------------------------
 
 # ------------------------------------------------------
 # set language locale.
@@ -125,6 +127,23 @@ echo "Install Grub"
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --removable
 grub-mkconfig -o /boot/grub/grub.cfg
 clear
+
+# ------------------------------------------------------
+# Update pacman repositories. multilib.
+# ------------------------------------------------------
+
+sed -i 's/^#\[multilib\]/\[multilib\]/' /etc/pacman.conf
+sed -i '/^\[multilib\]/ {n;s/^#//}' /etc/pacman.conf
+sed -i '/^#ParallelDownloads/ {n;s//ILoveCandy/}' /etc/pacman.conf
+sed -i 's/^#ParallelDownloads/ParallelDownloads' /etc/pacman.conf
+sed -i 's/^#Color/Color' /etc/pacman.conf
+pacman -Syy
+
+# ------------------------------------------------------
+# change shell bash to zsh
+# ------------------------------------------------------
+
+chsh -s /bin/zsh
 
 # ------------------------------------------------------
 # Add btrfs, setfont and nvidia to mkinitcpio
