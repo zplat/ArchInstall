@@ -47,8 +47,8 @@ pacman --needed --noconfirm -S  networkmanager network-manager-applet wpa_suppli
 pacman --needed --noconfirm -S  base-devel linux-headers
 pacman --needed --noconfirm -S  zsh zsh-completions bat git cups openssh udiskie 
 #pacman --needed --noconfirm -S  nfs-utils inetutils dnsutils brightnessctl avahi nss-mdns dnsmasq inxi moreutils
-pacman --needed --noconfirm -S  ntfs-3g htop zip unzip hplip
-pacman --needed --noconfirm -S  bluez bluez-utils firewalld mtools dosfstools ipset
+pacman --needed --noconfirm -S  ntfs-3g htop zip unzip hplip mtools dosfstools
+pacman --needed --noconfirm -S  bluez bluez-utils firewalld ipset
 pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
 #pacman --needed --noconfirm -S  nvidia nvidia-utils nvidia-settings opencl-nvidia
 # ------------------------------------------------------
