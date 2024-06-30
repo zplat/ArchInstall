@@ -88,11 +88,11 @@ mount /dev/"$BOOTDRIVE" /mnt/boot/efi
 
 #Windows
 mkdir /dev/windows
-mount /dev/"$WINDOWS" /mnt/windows
+#mount /dev/"$WINDOWS" /mnt/windows/
 
 #Storage
 mkdir /dev/storage
-mount /dev/"$STORAGE" /mnt/storage
+#mount /dev/"$STORAGE" /mnt/storage/
 
 # ------------------------------------------------------
 # Install base packages
@@ -103,8 +103,8 @@ pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode neovim
 # ------------------------------------------------------
 # Generate fstab
 # ------------------------------------------------------
-genfstab -U /mnt >> /mnt/etc/fstab
-cat /mnt/etc/fstab
+#genfstab -U /mnt >> /mnt/etc/fstab
+#cat /mnt/etc/fstab
 
 # ------------------------------------------------------
 # Install configuration scripts
@@ -117,4 +117,4 @@ curl --url "$SETUP_URL" >>/mnt/archinstall/shell.sh # Install script from git po
 # ------------------------------------------------------
 # Chroot to installed sytem
 # ------------------------------------------------------
-arch-chroot /mnt 
+#arch-chroot /mnt 
