@@ -202,7 +202,7 @@ When = PostTransaction
 Exec = /usr/bin/bash -c \"/usr/bin/pacman -Qtd > $ARCH_RESPOSITORY/orphanpkglist.txt || /usr/bin/echo '==> no orphans found'\"
 " >/usr/share/libalpm/hooks/pkgClean.hook
 
-#    List of Core programs
+#    List of Core programs installed
 
 echo "[Trigger]
 Operation = Install
@@ -214,7 +214,7 @@ When = PostTransaction
 Exec = /bin/sh -c '/usr/bin/pacman -Qqent > $ARCH_RESPOSITORY/corepkglist.txt'
 " >/usr/share/libalpm/hooks/pkgCore.hook
 
-#    List of AUR programs
+#    List of AUR programs installed
 
 echo "[Trigger]
 Operation = Install
@@ -277,3 +277,8 @@ echo "Please exit & shutdown (shutdown -h now), remove the installation media an
 
 echo "Please exit & shutdown (shutdown -h now), remove the installation media and start again."
 echo "Important: Activate WIFI after restart with nmtui."
+
+# ------------------------------------------------------
+# Remove file permanently
+# ------------------------------------------------------
+shred -uvz 02_Configuration.sh
