@@ -76,28 +76,28 @@ umount /mnt
 
 SSD_OPTIONS="noatime,ssd,compress=zstd,space_cache=v2,discard=async,subvol"
 
-mount -o "$SSD_OPTIONS"=@ /dev/$ROOTDRIVE /mnt
+mount -o "$SSD_OPTIONS"=@ /dev/"$ROOTDRIVE" /mnt
 mkdir -p /mnt/{boot/efi,home,.snapshots,var/{cache,log}}
-mount -o "$SSD_OPTIONS"=@cache /dev/$ROOTDRIVE /mnt/var/cache
-mount -o "$SSD_OPTIONS"=@home /dev/$ROOTDRIVE /mnt/home
-mount -o "$SSD_OPTIONS"=@log /dev/$ROOTDRIVE /mnt/var/log
-mount -o "$SSD_OPTIONS"=@snapshots /dev/$ROOTDRIVE /mnt/.snapshots
-mount /dev/$BOOTDRIVE /mnt/boot/efi
+mount -o "$SSD_OPTIONS"=@cache /dev/"$ROOTDRIVE" /mnt/var/cache
+mount -o "$SSD_OPTIONS"=@home /dev/"$ROOTDRIVE" /mnt/home
+mount -o "$SSD_OPTIONS"=@log /dev/"$ROOTDRIVE" /mnt/var/log
+mount -o "$SSD_OPTIONS"=@snapshots /dev/"$ROOTDRIVE" /mnt/.snapshots
+mount /dev/"$BOOTDRIVE" /mnt/boot/efi
 # mkdir /mnt/vm
 # mount /dev/$sda3 /mnt/vm
 
 #Windows
 mkdir /dev/windows
-mount /dev/$WINDOWS /mnt/windows
+mount /dev/"$WINDOWS" /mnt/windows
 
 #Storage
 mkdir /dev/storage
-mount /dev/$STORAGE /mnt/storage
+mount /dev/"$STORAGE" /mnt/storage
 
 # ------------------------------------------------------
 # Install base packages
 # ------------------------------------------------------
-pacstrap -K /mnt base base-devel git linux linux-firmware intel-ucode neovim
+pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode neovim
 
 
 # ------------------------------------------------------
@@ -110,11 +110,11 @@ cat /mnt/etc/fstab
 # Install configuration scripts
 # ------------------------------------------------------
 mkdir /mnt/archinstall
-cp 2-configuration.sh /mnt/archinstall/
+SETUP_URL="https://raw.githubusercontent.com/zplat/ArchInstall/master/02_Configuration.sh"
 
+curl --url "$SETUP_URL" >>/mnt/archinstall/shell.sh # Install script from git post chroot
 
 # ------------------------------------------------------
 # Chroot to installed sytem
 # ------------------------------------------------------
-arch-chroot /mnt ./archinstall/2-configuration.sh
-
+arch-chroot /mnt 
