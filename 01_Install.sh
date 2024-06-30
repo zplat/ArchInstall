@@ -22,6 +22,8 @@ clear
 
 BOOTDRIVE=""
 ROOTDRIVE=""
+WINDOWS=""
+STORAGE=""
 
 #-------------------------------------------------------
 # Update mirrors
@@ -41,8 +43,8 @@ timedatectl set-ntp true
 # Format partitions
 # ------------------------------------------------------
 
-mkfs.fat -F 32 /dev/$BOOTDRIVE;     #Format Boot partition.
-mkfs.btrfs -f /dev/$ROOTDRIVE
+mkfs.fat -F 32 /dev/"$BOOTDRIVE"     #Format Boot partition.
+mkfs.btrfs -f /dev/"$ROOTDRIVE"
 
 # ------------------------------------------------------
 # Mount points for btrfs
@@ -51,7 +53,7 @@ mkfs.btrfs -f /dev/$ROOTDRIVE
 # Unmount the actual Vol
 # ------------------------------------------------------
 
-mount /dev/$ROOTDRIVE /mnt
+mount /dev/"$ROOTDRIVE" /mnt
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@cache
 btrfs su cr /mnt/@home
@@ -72,6 +74,12 @@ mount -o "$SSD_OPTIONS"=@home /dev/"$ROOTDRIVE" /mnt/home
 mount -o "$SSD_OPTIONS"=@log /dev/"$ROOTDRIVE" /mnt/var/log
 mount -o "$SSD_OPTIONS"=@snapshots /dev/"$ROOTDRIVE" /mnt/.snapshots
 mount /dev/"$BOOTDRIVE" /mnt/boot/efi
+
+mkdir /dev/windows
+mount /dev/"$WINDOWS" /mnt/windows/
+
+mkdir /dev/storage
+mount /dev/"$STORAGE" /mnt/storage/
 
 # ------------------------------------------------------
 # Install base packages
