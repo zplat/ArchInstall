@@ -11,12 +11,13 @@
 # Key variables
 # ------------------------------------------------------
 
-HOST_NAME=''
-ROOT_PASSWD=''
-USER=''
-USER_PASSWD=''
+HOST_NAME=""
+ROOT_PASSWD=""
+USER=""
+USER_PASSWD=""
 
-ARCH_RESPOSITORY=''
+ARCH_RESPOSITORY="/home/$USER/.local/repositories/Arch"
+
 
 # ------------------------------------------------------
 # Set System Time
@@ -46,7 +47,6 @@ pacman --needed --noconfirm -S  grub efibootmgr grub-btrfs reflector pacman-cont
 pacman --needed --noconfirm -S  networkmanager network-manager-applet wpa_supplicant dialog
 pacman --needed --noconfirm -S  base-devel linux-headers
 pacman --needed --noconfirm -S  zsh zsh-completions bat git cups openssh udiskie 
-#pacman --needed --noconfirm -S  nfs-utils inetutils nss-mdns dnsmasq
 pacman --needed --noconfirm -S  ntfs-3g htop zip unzip hplip mtools dosfstools moreutils inxi
 pacman --needed --noconfirm -S  bluez bluez-utils firewalld ipset
 pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
@@ -253,14 +253,6 @@ echo "$USER ALL=(ALL) ALL" >>"/etc/sudoers.d/$USER"
 clear
 
 
-# ------------------------------------------------------
-# Copy installation scripts to home directory 
-# ------------------------------------------------------
-#cp /archinstall/3-yay.sh /home/$USER
-#cp /archinstall/4-zram.sh /home/$USER
-#cp /archinstall/5-timeshift.sh /home/$USER
-#cp /archinstall/6-preload.sh /home/$USER
-#cp /archinstall/snapshot.sh /home/$USER
 
 clear
 echo "     _                   "
