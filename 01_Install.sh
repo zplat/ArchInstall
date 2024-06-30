@@ -20,19 +20,8 @@ clear
 # Enter partition names
 # ------------------------------------------------------
 
-lsblk
-
-#read -p "Enter the name of the EFI partition (eg. sda1): " BOOTDRIVE
-#read -p "Enter the name of the ROOT partition (eg. sda2): " ROOTDRIVE
-
-
-#read -p "Enter the name of the drive Win 11 is on: " WINDOWS
-#read -p "Enter the name of the drive for joint Win11/Linux storage: " STORAGE
-
 BOOTDRIVE=""
 ROOTDRIVE=""
-WINDOWS=""
-STORAGE=""
 
 #-------------------------------------------------------
 # Update mirrors
@@ -83,38 +72,28 @@ mount -o "$SSD_OPTIONS"=@home /dev/"$ROOTDRIVE" /mnt/home
 mount -o "$SSD_OPTIONS"=@log /dev/"$ROOTDRIVE" /mnt/var/log
 mount -o "$SSD_OPTIONS"=@snapshots /dev/"$ROOTDRIVE" /mnt/.snapshots
 mount /dev/"$BOOTDRIVE" /mnt/boot/efi
-# mkdir /mnt/vm
-# mount /dev/$sda3 /mnt/vm
-
-#Windows
-mkdir /dev/windows
-#mount /dev/"$WINDOWS" /mnt/windows/
-
-#Storage
-mkdir /dev/storage
-#mount /dev/"$STORAGE" /mnt/storage/
 
 # ------------------------------------------------------
 # Install base packages
 # ------------------------------------------------------
-pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode neovim
 
+pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode neovim
 
 # ------------------------------------------------------
 # Generate fstab
 # ------------------------------------------------------
-#genfstab -U /mnt >> /mnt/etc/fstab
-#cat /mnt/etc/fstab
+genfstab -U /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab
 
 # ------------------------------------------------------
 # Install configuration scripts
 # ------------------------------------------------------
+
 mkdir /mnt/archinstall
 SETUP_URL="https://raw.githubusercontent.com/zplat/ArchInstall/master/02_Configuration.sh"
-
-curl --url "$SETUP_URL" >>/mnt/archinstall/shell.sh # Install script from git post chroot
+curl --url "$SETUP_URL" >> /mnt/archinstall/shell.sh # Install script from git post chroot
 
 # ------------------------------------------------------
 # Chroot to installed sytem
 # ------------------------------------------------------
-#arch-chroot /mnt 
+arch-chroot /mnt 
