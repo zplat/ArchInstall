@@ -46,11 +46,11 @@ pacman --needed --noconfirm -S  grub efibootmgr grub-btrfs reflector pacman-cont
 pacman --needed --noconfirm -S  networkmanager network-manager-applet wpa_supplicant dialog
 pacman --needed --noconfirm -S  base-devel linux-headers
 pacman --needed --noconfirm -S  zsh zsh-completions bat git cups openssh udiskie 
-#pacman --needed --noconfirm -S  nfs-utils inetutils dnsutils brightnessctl avahi nss-mdns dnsmasq inxi moreutils
-pacman --needed --noconfirm -S  ntfs-3g htop zip unzip hplip mtools dosfstools
+#pacman --needed --noconfirm -S  nfs-utils inetutils nss-mdns dnsmasq
+pacman --needed --noconfirm -S  ntfs-3g htop zip unzip hplip mtools dosfstools moreutils inxi
 pacman --needed --noconfirm -S  bluez bluez-utils firewalld ipset
 pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
-#pacman --needed --noconfirm -S  nvidia nvidia-utils nvidia-settings opencl-nvidia
+pacman --needed --noconfirm -S  nvidia nvidia-utils nvidia-settings opencl-nvidia
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -108,15 +108,14 @@ clear
 # ------------------------------------------------------
 # Enable Services
 # ------------------------------------------------------
+
 systemctl enable NetworkManager
 systemctl enable bluetooth
 systemctl enable cups.service
 systemctl enable sshd
-#systemctl enable avahi-daemon
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable firewalld
-systemctl enable acpid
 systemctl enable paccache.timer
 
 # ------------------------------------------------------
