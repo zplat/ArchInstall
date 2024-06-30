@@ -22,17 +22,17 @@ clear
 
 lsblk
 
-read -p "Enter the name of the EFI partition (eg. sda1): " BOOTDRIVE
-read -p "Enter the name of the ROOT partition (eg. sda2): " ROOTDRIVE
+#read -p "Enter the name of the EFI partition (eg. sda1): " BOOTDRIVE
+#read -p "Enter the name of the ROOT partition (eg. sda2): " ROOTDRIVE
 
 
-read -p "Enter the name of the drive Win 11 is on: " WINDOWS
-read -p "Enter the name of the drive for joint Win11/Linux storage: " STORAGE
+#read -p "Enter the name of the drive Win 11 is on: " WINDOWS
+#read -p "Enter the name of the drive for joint Win11/Linux storage: " STORAGE
 
-#BOOTDRIVE=""
-#ROOTDRIVE=""
-#WINDOWS=""
-#STORAGE=""
+BOOTDRIVE=""
+ROOTDRIVE=""
+WINDOWS=""
+STORAGE=""
 
 #-------------------------------------------------------
 # Update mirrors
