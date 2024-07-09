@@ -72,7 +72,7 @@ echo "LANG=en_GB.UTF-8" >> /etc/locale.conf
 # Set Keyboard
 # ------------------------------------------------------
 
-echo "FONT=ter-132wn" >> /etc/vconsole.conf
+echo "FONT=ter-132n" >> /etc/vconsole.conf
 echo "KEYMAP=us-acentos" >> /etc/vconsole.conf
 echo "FONT_MAP=8859-1" >> /etc/vconsole.conf
 
