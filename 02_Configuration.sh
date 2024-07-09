@@ -43,14 +43,14 @@ pacman -Syy
 # Install Packages
 # ------------------------------------------------------
 
-pacman --needed --noconfirm -S  grub efibootmgr grub-btrfs reflector pacman-contrib xdg-user-dirs xdg-utils terminus-font
+pacman --needed --noconfirm -S  grub efibootmgr grub-btrfs reflector pacman-contrib xdg-user-dirs xdg-utils terminus-font rsync
 pacman --needed --noconfirm -S  networkmanager network-manager-applet wpa_supplicant dialog
 pacman --needed --noconfirm -S  base-devel linux-headers
 pacman --needed --noconfirm -S  zsh zsh-completions bat git cups openssh udiskie 
 pacman --needed --noconfirm -S  ntfs-3g htop zip unzip hplip mtools dosfstools moreutils inxi
-pacman --needed --noconfirm -S  bluez bluez-utils firewalld ipset
-pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
-pacman --needed --noconfirm -S  nvidia nvidia-utils nvidia-settings opencl-nvidia
+#pacman --needed --noconfirm -S  bluez bluez-utils firewalld ipset
+#pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
+#pacman --needed --noconfirm -S  nvidia-dkms nvidia-utils nvidia-settings libva libva-nvidia-driver-git
 # ------------------------------------------------------
 
 # ------------------------------------------------------
@@ -72,7 +72,7 @@ echo "LANG=en_GB.UTF-8" >> /etc/locale.conf
 # Set Keyboard
 # ------------------------------------------------------
 
-echo "FONT=ter-v18n" >> /etc/vconsole.conf
+echo "FONT=ter-132wn" >> /etc/vconsole.conf
 echo "KEYMAP=us-acentos" >> /etc/vconsole.conf
 echo "FONT_MAP=8859-1" >> /etc/vconsole.conf
 
@@ -110,12 +110,12 @@ clear
 # ------------------------------------------------------
 
 systemctl enable NetworkManager
-systemctl enable bluetooth
-systemctl enable cups.service
-systemctl enable sshd
+#systemctl enable bluetooth
+#systemctl enable cups.service
+#systemctl enable sshd
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
-systemctl enable firewalld
+#systemctl enable firewalld
 systemctl enable paccache.timer
 
 # ------------------------------------------------------
@@ -229,8 +229,8 @@ Exec = /bin/sh -c '/usr/bin/pacman -Qqem > $ARCH_RESPOSITORY/aurpkglist.txt'
 # cacche
 # ------------------------------------------------------
 
-pacman -S ccache
-sed -i 'x;/^BUILDENV/s/!ccache/ccache/' /etc/makepkg.conf
+#pacman -S ccache
+#sed -i 'x;/^BUILDENV/s/!ccache/ccache/' /etc/makepkg.conf
 
 # ------------------------------------------------------
 # MAKEFLAGS
@@ -272,4 +272,4 @@ echo "Important: Activate WIFI after restart with nmtui."
 # ------------------------------------------------------
 # Remove file permanently
 # ------------------------------------------------------
-shred -uvz 02_Configuration.sh
+#shred -uvz 02_Configuration.sh
