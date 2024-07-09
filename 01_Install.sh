@@ -75,10 +75,10 @@ mount -o "$SSD_OPTIONS"=@log /dev/"$ROOTDRIVE" /mnt/var/log
 mount -o "$SSD_OPTIONS"=@snapshots /dev/"$ROOTDRIVE" /mnt/.snapshots
 mount /dev/"$BOOTDRIVE" /mnt/boot/efi
 
-mkdir /dev/windows
+mkdir /mnt/windows
 mount /dev/"$WINDOWS" /mnt/windows/
 
-mkdir /dev/storage
+mkdir /mnt/storage
 mount /dev/"$STORAGE" /mnt/storage/
 
 # ------------------------------------------------------
