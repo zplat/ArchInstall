@@ -22,7 +22,6 @@ clear
 
 BOOTDRIVE=""
 ROOTDRIVE=""
-WINDOWS=""
 STORAGE=""
 
 #-------------------------------------------------------
@@ -75,17 +74,14 @@ mount -o "$SSD_OPTIONS"=@log /dev/"$ROOTDRIVE" /mnt/var/log
 mount -o "$SSD_OPTIONS"=@snapshots /dev/"$ROOTDRIVE" /mnt/.snapshots
 mount /dev/"$BOOTDRIVE" /mnt/boot/efi
 
-mkdir /mnt/windows
-mount /dev/"$WINDOWS" /mnt/windows/
-
-mkdir /mnt/storage
+mkdir -p /mnt/storage
 mount /dev/"$STORAGE" /mnt/storage/
 
 # ------------------------------------------------------
 # Install base packages
 # ------------------------------------------------------
 
-pacstrap -K /mnt base base-devel linux linux-firmware intel-ucode neovim
+pacstrap -K /mnt base linux linux-firmware intel-ucode neovim
 
 # ------------------------------------------------------
 # Generate fstab
