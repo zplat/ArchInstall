@@ -12,9 +12,9 @@
 # ------------------------------------------------------
 
 HOST_NAME=""
-ROOT_PASSWD=""
+ROOT_PASSWD=''
 USER=""
-USER_PASSWD=""
+USER_PASSWD=''
 
 ARCH_RESPOSITORY="/home/$USER/.local/repositories/Arch"
 
@@ -48,7 +48,7 @@ pacman --needed --noconfirm -S  networkmanager network-manager-applet wpa_suppli
 pacman --needed --noconfirm -S  base-devel linux-headers
 pacman --needed --noconfirm -S  zsh zsh-completions bat git cups openssh udiskie 
 pacman --needed --noconfirm -S  ntfs-3g htop zip unzip hplip mtools dosfstools moreutils inxi
-#pacman --needed --noconfirm -S  bluez bluez-utils firewalld ipset
+pacman --needed --noconfirm -S  bluez bluez-utils firewalld ipset
 #pacman --needed --noconfirm -S  pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
 #pacman --needed --noconfirm -S  nvidia-dkms nvidia-utils nvidia-settings libva libva-nvidia-driver-git
 # ------------------------------------------------------
@@ -110,12 +110,12 @@ clear
 # ------------------------------------------------------
 
 systemctl enable NetworkManager
-#systemctl enable bluetooth
-#systemctl enable cups.service
-#systemctl enable sshd
+systemctl enable bluetooth
+systemctl enable cups.service
+systemctl enable sshd
 systemctl enable reflector.timer
 systemctl enable fstrim.timer
-#systemctl enable firewalld
+systemctl enable firewalld
 systemctl enable paccache.timer
 
 # ------------------------------------------------------
@@ -125,34 +125,6 @@ systemctl enable paccache.timer
 echo "Install Grub"
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --removable
 grub-mkconfig -o /boot/grub/grub.cfg
-clear
-
-# ------------------------------------------------------
-# Update pacman repositories. multilib.
-# ------------------------------------------------------
-
-sed -i 's/^#\[multilib\]/\[multilib\]/' /etc/pacman.conf
-sed -i '/^\[multilib\]/ {n;s/^#//}' /etc/pacman.conf
-sed -i '/^#ParallelDownloads/ {n;s//ILoveCandy/}' /etc/pacman.conf
-sed -i 's/^#ParallelDownloads/ParallelDownloads' /etc/pacman.conf
-sed -i 's/^#Color/Color' /etc/pacman.conf
-pacman -Syy
-
-# ------------------------------------------------------
-# change shell bash to zsh
-# ------------------------------------------------------
-
-chsh -s /bin/zsh
-
-# ------------------------------------------------------
-# Add btrfs, setfont and nvidia to mkinitcpio
-# Before: MODULE=()
-# After:  MODULE=(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm setfont)
-# ------------------------------------------------------
-
-echo "Update mkinitcpio.conf and update linux"
-sed -i 's/MODULE.*/MODULE=\(btrfs nvidia nvidia_modeset nvidia_uvm nvidia_drm setfont\)/' /etc/mkinitcpio.conf
-mkinitcpio -p linux
 clear
 
 # ------------------------------------------------------
@@ -229,8 +201,8 @@ Exec = /bin/sh -c '/usr/bin/pacman -Qqem > $ARCH_RESPOSITORY/aurpkglist.txt'
 # cacche
 # ------------------------------------------------------
 
-#pacman -S ccache
-#sed -i 'x;/^BUILDENV/s/!ccache/ccache/' /etc/makepkg.conf
+pacman -S ccache
+sed -i 'x;/^BUILDENV/s/!ccache/ccache/' /etc/makepkg.conf
 
 # ------------------------------------------------------
 # MAKEFLAGS
